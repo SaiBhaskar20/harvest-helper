@@ -1,0 +1,744 @@
+
+<!DOCTYPE html>
+<html lang="{{ 'te' if lang == 'te' else 'en' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#123d2b">
+    <title>Harvest Helper | Smart Agriculture</title>
+
+    <style>
+        :root {
+            --green-950: #123d2b;
+            --green-900: #174b34;
+            --green-700: #23834f;
+            --green-100: #e9f6ed;
+            --green-50: #f5faf6;
+            --text: #20352a;
+            --muted: #68786e;
+            --border: #e0e9e2;
+            --white: #ffffff;
+            --red-bg: #fff0ef;
+            --red: #a52d2d;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, "Noto Sans Telugu", sans-serif;
+            background: var(--green-50);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: var(--green-950);
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            background: #ffffff1a;
+            border: 1px solid #ffffff30;
+            border-radius: 14px;
+            font-size: 25px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 21px;
+            line-height: 1.3;
+        }
+
+        .brand p {
+            margin: 3px 0 0;
+            color: #c5dfcd;
+            font-size: 12px;
+        }
+
+        .language {
+            width: auto;
+            min-width: 115px;
+            padding: 10px 12px;
+            border: 1px solid #ffffff55;
+            border-radius: 10px;
+            background: #ffffff12;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .language option {
+            color: #20352a;
+            background: white;
+        }
+
+        .hero {
+            padding: 44px 20px 54px;
+            text-align: center;
+            color: white;
+            background: linear-gradient(125deg, #174b34, #23834f);
+        }
+
+        .hero-tag {
+            display: inline-block;
+            padding: 6px 13px;
+            border: 1px solid #ffffff45;
+            border-radius: 30px;
+            background: #ffffff12;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero h2 {
+            margin: 18px 0 10px;
+            font-size: clamp(27px, 4vw, 40px);
+            line-height: 1.25;
+        }
+
+        .hero p {
+            max-width: 650px;
+            margin: 0 auto;
+            color: #e1f1e5;
+            font-size: 15px;
+        }
+
+        .container {
+            width: min(1100px, 92%);
+            margin: -25px auto 50px;
+            position: relative;
+        }
+
+        .panel {
+            padding: 28px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: 0 12px 35px #183e2910;
+        }
+
+        .section-heading {
+            margin: 0;
+            font-size: 22px;
+            color: var(--green-950);
+        }
+
+        .section-description {
+            margin: 5px 0 24px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .field input {
+            width: 100%;
+            min-height: 46px;
+            padding: 12px 13px;
+            border: 1px solid #d6e2d8;
+            border-radius: 10px;
+            background: #fcfefc;
+            color: var(--text);
+            font: inherit;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .field input:focus {
+            border-color: var(--green-700);
+            box-shadow: 0 0 0 3px #23834f20;
+        }
+
+        .field input::placeholder {
+            color: #9aa69d;
+        }
+
+        .hint {
+            display: block;
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .submit-button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 11px;
+            background: var(--green-700);
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .submit-button:hover {
+            background: var(--green-900);
+            transform: translateY(-1px);
+        }
+
+        .error {
+            margin: 0 0 20px;
+            padding: 13px 15px;
+            border: 1px solid #ffd2cf;
+            border-radius: 10px;
+            background: var(--red-bg);
+            color: var(--red);
+            font-size: 14px;
+        }
+
+        .results-section {
+            margin-top: 30px;
+        }
+
+        .results-title {
+            margin: 0 0 18px;
+            font-size: 25px;
+            color: var(--green-950);
+        }
+
+        .crop-card {
+            padding: 25px;
+            border: 1px solid #cce8d3;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #effaf1, #ffffff);
+        }
+
+        .result-label {
+            margin: 0 0 5px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .crop-name {
+            margin: 0;
+            color: var(--green-900);
+            font-size: clamp(25px, 4vw, 34px);
+            overflow-wrap: anywhere;
+        }
+
+        .crop-subtitle {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .weather-card {
+            padding: 18px 14px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: white;
+        }
+
+        .weather-icon {
+            font-size: 23px;
+        }
+
+        .weather-label {
+            display: block;
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .weather-value {
+            display: block;
+            margin-top: 5px;
+            color: var(--green-950);
+            font-size: 22px;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .subheading {
+            margin: 28px 0 14px;
+            font-size: 20px;
+            color: var(--green-950);
+        }
+
+        .fertilizer-card {
+            margin-top: 13px;
+            padding: 21px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: white;
+        }
+
+        .fertilizer-card h4 {
+            margin: 0 0 14px;
+            font-size: 18px;
+            color: var(--green-900);
+            overflow-wrap: anywhere;
+        }
+
+        .detail {
+            margin-top: 13px;
+        }
+
+        .detail strong {
+            display: block;
+            margin-bottom: 3px;
+            font-size: 14px;
+        }
+
+        .detail p {
+            margin: 0;
+            color: #506257;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .explanation {
+            padding: 20px;
+            border-left: 4px solid var(--green-700);
+            border-radius: 8px;
+            background: var(--green-50);
+            line-height: 1.9;
+            overflow-wrap: anywhere;
+        }
+
+        .notice {
+            margin-top: 22px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            background: #fff8e8;
+            color: #70521b;
+            font-size: 13px;
+        }
+
+        .footer {
+            padding: 25px 15px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        @media (max-width: 650px) {
+            .navbar {
+                padding: 15px 5%;
+                align-items: flex-start;
+            }
+
+            .brand h1 {
+                font-size: 17px;
+            }
+
+            .brand p {
+                font-size: 11px;
+            }
+
+            .brand-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .language {
+                min-width: 88px;
+                max-width: 105px;
+                padding: 9px 6px;
+                font-size: 12px;
+            }
+
+            .hero {
+                padding: 35px 18px 45px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .panel {
+                padding: 20px 16px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .weather-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .weather-card {
+                display: grid;
+                grid-template-columns: 35px 1fr;
+                align-items: center;
+                column-gap: 8px;
+                padding: 12px;
+            }
+
+            .weather-icon {
+                grid-row: span 2;
+            }
+
+            .weather-label,
+            .weather-value {
+                margin: 0;
+            }
+
+            .weather-value {
+                font-size: 19px;
+            }
+
+            .crop-card,
+            .fertilizer-card {
+                padding: 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="brand">
+            <div class="brand-icon">🌾</div>
+            <div>
+                <h1>Harvest Helper</h1>
+                <p>
+                    {% if lang == 'te' %}
+                        స్మార్ట్ వ్యవసాయ సహాయక వ్యవస్థ
+                    {% else %}
+                        Smart Agriculture Assistant
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <select class="language"
+                aria-label="Select language"
+                onchange="changeLanguage(this.value)">
+            <option value="en" {% if lang != 'te' %}selected{% endif %}>
+                English
+            </option>
+            <option value="te" {% if lang == 'te' %}selected{% endif %}>
+                తెలుగు
+            </option>
+        </select>
+    </header>
+
+    <section class="hero">
+        <span class="hero-tag">
+            {% if lang == 'te' %}
+                🌱 వ్యవసాయానికి సాంకేతిక సహాయం
+            {% else %}
+                🌱 TECHNOLOGY FOR FARMING
+            {% endif %}
+        </span>
+
+        <h2>
+            {% if lang == 'te' %}
+                మీ నేలకు సరైన పంటను కనుగొనండి
+            {% else %}
+                Find the Right Crop for Your Soil
+            {% endif %}
+        </h2>
+
+        <p>
+            {% if lang == 'te' %}
+                నేలలోని పోషక విలువలు, pH మరియు నగర వాతావరణ వివరాల ఆధారంగా
+                పంట అంచనాను పొందండి.
+            {% else %}
+                Get a crop prediction using soil nutrients, pH, and weather
+                information for your selected city.
+            {% endif %}
+        </p>
+    </section>
+
+    <main class="container">
+
+        <section class="panel">
+            <h2 class="section-heading">
+                {% if lang == 'te' %}
+                    నేల వివరాలు నమోదు చేయండి
+                {% else %}
+                    Enter Soil Details
+                {% endif %}
+            </h2>
+
+            <p class="section-description">
+                {% if lang == 'te' %}
+                    అన్ని వివరాలను నమోదు చేసి సిఫార్సులను పొందండి.
+                {% else %}
+                    Fill in the details below to generate your recommendation.
+                {% endif %}
+            </p>
+
+            <form action="/predict" method="post">
+                <input type="hidden" name="lang" value="{{ lang }}">
+
+                {% if error %}
+                    <div class="error" role="alert">{{ error }}</div>
+                {% endif %}
+
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label for="city">
+                            {% if lang == 'te' %}నగరం పేరు{% else %}City Name{% endif %}
+                        </label>
+                        <input type="text" id="city" name="city"
+                               placeholder="{% if lang == 'te' %}ఉదా: Vijayawada{% else %}e.g. Vijayawada{% endif %}"
+                               value="{{ request.form.get('city', '') }}"
+                               autocomplete="address-level2" required>
+                        <span class="hint">
+                            {% if lang == 'te' %}
+                                వాతావరణ సమాచారం కోసం నగరం పేరు
+                            {% else %}
+                                Used to retrieve local weather information
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="field">
+                        <label for="N">
+                            {% if lang == 'te' %}నైట్రోజన్ (N){% else %}Nitrogen (N){% endif %}
+                        </label>
+                        <input type="number" id="N" name="N"
+                               min="0" step="any"
+                               placeholder="{% if lang == 'te' %}నైట్రోజన్ విలువ{% else %}Enter nitrogen value{% endif %}"
+                               value="{{ request.form.get('N', '') }}" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="P">
+                            {% if lang == 'te' %}ఫాస్ఫరస్ (P){% else %}Phosphorus (P){% endif %}
+                        </label>
+                        <input type="number" id="P" name="P"
+                               min="0" step="any"
+                               placeholder="{% if lang == 'te' %}ఫాస్ఫరస్ విలువ{% else %}Enter phosphorus value{% endif %}"
+                               value="{{ request.form.get('P', '') }}" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="K">
+                            {% if lang == 'te' %}పొటాషియం (K){% else %}Potassium (K){% endif %}
+                        </label>
+                        <input type="number" id="K" name="K"
+                               min="0" step="any"
+                               placeholder="{% if lang == 'te' %}పొటాషియం విలువ{% else %}Enter potassium value{% endif %}"
+                               value="{{ request.form.get('K', '') }}" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="ph">Soil pH</label>
+                        <input type="number" id="ph" name="ph"
+                               min="0" max="14" step="any"
+                               placeholder="0–14"
+                               value="{{ request.form.get('ph', '') }}" required>
+                        <span class="hint">
+                            {% if lang == 'te' %}
+                                pH విలువ 0 నుంచి 14 మధ్య ఉండాలి
+                            {% else %}
+                                Enter a value between 0 and 14
+                            {% endif %}
+                        </span>
+                    </div>
+
+                </div>
+
+                <button class="submit-button" type="submit">
+                    {% if lang == 'te' %}
+                        🌱 పంట సిఫార్సు పొందండి
+                    {% else %}
+                        🌱 Get Crop Recommendation
+                    {% endif %}
+                </button>
+            </form>
+        </section>
+
+        {% if crop is defined %}
+        <section class="results-section" aria-live="polite">
+            <h2 class="results-title">
+                {% if lang == 'te' %}
+                    మీ ఫలితాలు
+                {% else %}
+                    Your Recommendation Results
+                {% endif %}
+            </h2>
+
+            <div class="crop-card">
+                <p class="result-label">
+                    {% if lang == 'te' %}అంచనా వేసిన పంట{% else %}Predicted Crop{% endif %}
+                </p>
+
+                <h3 class="crop-name">
+                    {% if lang == 'te' %}
+                        {{ crop_te }}
+                    {% else %}
+                        {{ crop | title }}
+                    {% endif %}
+                </h3>
+
+                {% if lang == 'te' %}
+                <p class="crop-subtitle">English: {{ crop | title }}</p>
+                {% endif %}
+            </div>
+
+            <div class="weather-grid">
+                <div class="weather-card">
+                    <span class="weather-icon">🌡️</span>
+                    <span class="weather-label">
+                        {% if lang == 'te' %}ఉష్ణోగ్రత{% else %}Temperature{% endif %}
+                    </span>
+                    <span class="weather-value">{{ temp }} °C</span>
+                </div>
+
+                <div class="weather-card">
+                    <span class="weather-icon">💧</span>
+                    <span class="weather-label">
+                        {% if lang == 'te' %}గాలిలో తేమ{% else %}Humidity{% endif %}
+                    </span>
+                    <span class="weather-value">{{ humidity }}%</span>
+                </div>
+
+                <div class="weather-card">
+                    <span class="weather-icon">🌧️</span>
+                    <span class="weather-label">
+                        {% if lang == 'te' %}వర్షపాతం{% else %}Rainfall{% endif %}
+                    </span>
+                    <span class="weather-value">{{ rainfall }} mm</span>
+                </div>
+            </div>
+
+            <h3 class="subheading">
+                {% if lang == 'te' %}
+                    🧪 ఎరువుల సూచనలు
+                {% else %}
+                    🧪 Fertilizer Recommendations
+                {% endif %}
+            </h3>
+
+            {% for item in fertilizer_details %}
+            <article class="fertilizer-card">
+                <h4>🌿 {{ item.name }}</h4>
+
+                <div class="detail">
+                    <strong>
+                        {% if lang == 'te' %}ఎందుకు సూచించింది?{% else %}Why is it suggested?{% endif %}
+                    </strong>
+                    <p>{{ item.reason }}</p>
+                </div>
+
+                <div class="detail">
+                    <strong>
+                        {% if lang == 'te' %}ఉపయోగం{% else %}Potential Benefit{% endif %}
+                    </strong>
+                    <p>{{ item.benefit }}</p>
+                </div>
+
+                <div class="detail">
+                    <strong>
+                        {% if lang == 'te' %}తదుపరి చర్య{% else %}Recommended Next Step{% endif %}
+                    </strong>
+                    <p>{{ item.action }}</p>
+                </div>
+            </article>
+            {% endfor %}
+
+            <h3 class="subheading">
+                {% if lang == 'te' %}
+                    ఫలితాల వివరణ
+                {% else %}
+                    Understanding Your Results
+                {% endif %}
+            </h3>
+
+            <div class="explanation">{{ explanation }}</div>
+
+            <div class="notice">
+                {% if lang == 'te' %}
+                    <strong>ముఖ్య గమనిక:</strong>
+                    ఇవి ప్రాథమిక అంచనాలు మాత్రమే. ఎరువులు వాడే ముందు
+                    నేల పరీక్ష మరియు స్థానిక వ్యవసాయ నిపుణుల సలహా తీసుకోండి.
+                {% else %}
+                    <strong>Important:</strong>
+                    These are preliminary recommendations, not a guarantee
+                    of crop yield. Consult a soil test and local agricultural
+                    experts before applying fertilizer.
+                {% endif %}
+            </div>
+        </section>
+        {% endif %}
+
+    </main>
+
+    <footer class="footer">
+        © Harvest Helper ·
+        {% if lang == 'te' %}
+            మెరుగైన వ్యవసాయ నిర్ణయాల కోసం
+        {% else %}
+            Supporting Better Farming Decisions
+        {% endif %}
+    </footer>
+
+    <script>
+        function changeLanguage(language) {
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/predict";
+
+            const field = document.createElement("input");
+            field.type = "hidden";
+            field.name = "lang";
+            field.value = language;
+
+            form.appendChild(field);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+
+</body>
+</html>
